@@ -58,3 +58,68 @@ Now when I navigate to the Resource Group I can see that a Public IP address, Ne
 <img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/12Resourcecheck.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 
+<p align="center">
+Since my goal is to be discovered I’ll need to modify the Network security rules. First I’ll delete the RDP rule and add a rule to allow all ports to be reached: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/13NSG1.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/14NSG2.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/15NSG3.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+
+<p align="center">
+Now that all inbound traffic is allowed I now have to disable the firewall on the VM. I’ll be gaining access to the VM via using the public IP address and Remote Desktop Protocol. Once I was logged into the VM I navigated to Windows Defender Firewall properties and turned off the firewall state for the Domain, Private, and Public profiles: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/16RDP1.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/17RDP2.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/18RDP3.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+
+<p align="center">
+I opened the Windows cmd and ran the prompt ping 40.76.120.54 to ensure that the machine could be reached: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/19PingVM.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+
+<p align="center">
+I then disconnected from the VM and purposely entered the wrong login credentials. Then I login and navigate to the Event Viewer, click Windows Logs and then click Security: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/20RDPfail.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/21EV.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+
+<p align="center">
+I clicked on the code 4652 which is login related and viewed the event. The event was logged as a fail, indicating that the login attempt was unsuccessful: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/22EVloginfail.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+
+<p align="center">
+Now that I know the logs are active and accurate I’ll create a log repository using Log Analytics workspaces in Azure: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/23LogAgg.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+
+<p align="center">
+Now I’ll add the Log Analytics workspace that I created to Microsoft Sentinel which acts as a SIEM: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/24Sentinel.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+
+<p align="center">
+Once it has finished being deployed I’ll go to configuration then select Data connectors and select Windows Security Events via AMA to install: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/25Sentinel2.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+
+<p align="center">
+With that now installed we can set up data collection rules by clicking “Open connector page” Name the collector, select the resource group, ensure the VM is selected and create the collector: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/26WSEAMA.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/27WSEMVM.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/28DCR.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+
+<p align="center">
+To confirm the connection I verified that “AzureMonitorWindowsAgent” appeared under Extensions + applications of the VM and also went to the “Log Analytics workspaces” went to the Log tab and ran the command “SecurityEvent” to display the logged events: <br/>
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/29VMverification.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
+<img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/30VM%20Verify.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<br />
