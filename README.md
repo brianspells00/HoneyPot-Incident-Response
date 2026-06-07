@@ -162,3 +162,26 @@ I then disabled the allow all inbound traffic rule on the Network Security group
 <br />
 <img src="https://github.com/brianspells00/HoneyPot-Incident-Response/blob/main/Images/39denyalloutbound.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
+
+<p align="center">
+I then rebuilt and deployed the VM, this time with the proper firewalls enabled and proper secure inbound ports enabled to mitigate the likelihood of another successful breach: <br/>
+
+<h2>Summary</h2>
+
+On 6/5/2026 at 11:54:12.837 PM a VM honeypot account was successfully logged into by a non-admin. After an investigation of the cybersecurity team, it is clear that the attacker(s) successfully gained access to the honeypot. 
+
+Identify:
+After a quick investigation of the incident management team, it could be seen that the virtual honeypot was accessed by at least 2 different users who were able to gain access due to the firewall being disabled and the network security rules being misconfigured.
+
+Protect:
+To protect and safeguard against future unwanted logins, the network security team implemented a new firewall rule to allow incoming traffic through secure ports and configured the firewall to protect access points on the machine. 
+
+Detect:
+To detect new and similar unauthorized machine logins and improve the ability to detect these threats, the security team will install network monitoring software to detect abnormal traffic patterns based on time of event, login time, Source IP address, compared to known and standard login times and Source IP addresses.
+
+Respond:
+The incident management team responded by blocking incoming and outgoing network traffic to ensure no-one else was able to gain access to the system to contain the issue and start identifying the root cause. The root cause was identified as a traffic rule that allowed all inbound traffic on the Network Security group. The Virtual Machine was deleted along with the users associated with the machine after verifying that the other components of the Resource group were not compromised. 
+
+
+Recover:
+After disabling all inbound and outbound traffic, the vulnerabilities were. The Virtual machine has been re-launched with the proper firewall and network security permissions. To ensure something doesn’t happen in a non-honeypot environment the security team will ensure the network's security via monitoring and “safe practice” training.
