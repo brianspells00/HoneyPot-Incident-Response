@@ -6,7 +6,7 @@ In this lab I created a Virtual Honey Pot using Microsoft Azure resources to mon
 
 <h2>Languages, Utilities and Services Used</h2>
 
-- <b>Microsoft Azurel</b> 
+- <b>Microsoft Azure</b> 
 - <b>Remote Desktop Protocol</b>
 - <b>Windows Defender Firewall</b> 
 
